@@ -6,20 +6,17 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class TranslationService
 {
-    protected GoogleTranslate $translator;
-
-    public function __contruct()
+    protected function getTranslator(): GoogleTranslate
     {
-        $this->translator = new GoogleTranslate();
-        $this->translator->setSource('fr');
+        return new GoogleTranslate('en', 'fr'); // target, source
     }
 
     public function translate(string $text) : array
     {
         return [
             'fr' => $text,
-            'en' => $this->translator->setTarget('en')->translate($text),
-            'pt' => $this->translator->setTarget('pt')->translate($text),
+            'en' => $this->getTranslator()->setTarget('en')->translate($text),
+            'pt' => $this->getTranslator()->setTarget('pt')->translate($text),
         ];
     }
 
