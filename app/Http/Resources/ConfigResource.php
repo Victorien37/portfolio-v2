@@ -15,8 +15,8 @@ class ConfigResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'job'               => $this->job,
-            'description'       => $this->description,
+            'job'               => $this->getTranslation('job', 'fr'),
+            'description'       => $this->getTranslation('description', 'fr'),
             'dark_background'   => $this->dark_background,
             'dark_primary'      => $this->dark_primary,
             'dark_secondary'    => $this->dark_secondary,

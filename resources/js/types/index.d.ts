@@ -31,6 +31,10 @@ export interface SharedData {
     [key: string]:  unknown;
 }
 
+interface Multilingual {
+    [key: string]: string;
+}
+
 export interface User {
     id:                 number;
     firstname:          string;
@@ -79,8 +83,8 @@ export interface Interest {
 
 export interface Config {
     id:                 number;
-    job:                string;
-    description:        string;
+    job:                Multilingual;
+    description:        Multilingual;
     dark_background:    string;
     dark_primary:       string;
     dark_secondary:     string;
