@@ -53,7 +53,7 @@ export interface Study {
     id:             number;
     start:          Date;
     end:            Date | null;
-    name:           string;
+    name:           Multilingual;
     school:         string;
     full_name:      string;
     obtained:       boolean;
@@ -65,7 +65,7 @@ export interface Study {
 
 export interface Language {
     id:             number;
-    name:           string;
+    name:           Multilingual;
     level:          'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
     created_at:     string;
     updated_at:     string;
@@ -75,7 +75,7 @@ export interface Language {
 export interface Interest {
     id:             number;
     emoji:          string;
-    name:           string;
+    name:           Multilingual;
     created_at:     string;
     updated_at:     string;
     [key: string]:  unknown;
@@ -108,7 +108,7 @@ export interface Link {
 
 export interface Technology {
     id:             number;
-    name:           string;
+    name:           Multilingual;
     type:           'Backend' | 'Frontend' | 'Mobile' | 'Database';
     created_at:     string;
     updated_at:     string;
@@ -117,9 +117,9 @@ export interface Technology {
 
 export interface Project {
     id:                 number;
-    title:              string;
-    description_short:  string;
-    description_long:   string;
+    title:              Multilingual;
+    description_short:  Multilingual;
+    description_long:   Multilingual;
     url:                string | null;
     side:               boolean;
     in_progress:        boolean;
@@ -130,16 +130,24 @@ export interface Project {
 
 export interface Achivement {
     id:             number;
-    name:           string;
+    name:           Multilingual;
     created_at:     string;
     updated_at:     string;
     [key: string]:  unknown;
 }
 
+interface SkillType {
+    id:         number;
+    name:       Multilingual;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface Skill {
     id:             number;
     svg:            string;
-    name:           string;
+    name:           Multilingual;
+    type?:          SkillType;
     created_at:     string;
     updated_at:     string;
     [key: string]:  unknown;
@@ -149,8 +157,8 @@ export interface Experience {
     id:             number;
     start:          Date;
     end:            Date | null;
-    job:            string;
-    description:    string;
+    job:            Multilingual;
+    description:    Multilingual;
     contract:       'CDD' | 'CDI' | 'Alternance' | 'Auto Entrepreneur';
     created_at:     string;
     updated_at:     string;
