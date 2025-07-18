@@ -27,4 +27,27 @@ class SkillCategoryController extends Controller
 
         return redirect()->route('config.index');
     }
+
+    public function attach(Request $request, SkillCategory $skillCategory) {
+        foreach ($skillCategory->skills as $skill) {
+            $skillCategory->skills()->detach($skill->id);
+        }
+
+        foreach ($request->skills as $skillId) {
+            $skillCategory->skills()->attach($skillId);
+        }
+
+        return redirect()->route('config.index');
+    }
+
+    public function destroy(SkillCategory $skillCategory) : RedirectResponse
+    {
+        foreach ($skillCategory->skills as $skill) {
+            $skillCategory->skills()->detach($skill->id);
+        }
+
+        $skillCategory->delete();
+
+        return redirect()->route('config.index');
+    }
 }

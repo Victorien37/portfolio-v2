@@ -23,10 +23,10 @@ export function CreateSkillCategoryModal({ open, setOpen }: ModalProps) {
                 onSuccess: () => {
                     reset();
                     setOpen(false);
-                    toast.success("Compétence ajouté");
+                    toast.success("La catégorie de compétence à bien été ajouté");
                 },
                 onError: () => {
-                    toast.error("Une erreur s'est produite lors de la création de la compétence.");
+                    toast.error("Une erreur s'est produite lors de la création de la catégorie de compétence.");
                 }
             });
         } else {

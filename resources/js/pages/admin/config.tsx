@@ -25,6 +25,9 @@ import { Emoji } from "emoji-picker-react";
 import { EditInterestModal } from "@/components/modals/interest/edit-interest-modal";
 import { DynamicIcon } from "@/components/personnal/dynamic-icon";
 import { CreateSkillCategoryModal } from "@/components/modals/skill/create-skill-category-modal";
+import { SkillModal } from "@/components/modals/skill/skill-modal";
+import { AttachSkillCategoryModal } from "@/components/modals/skill/attach-skill-category-modal";
+import { Separator } from "@/components/ui/separator";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -38,16 +41,17 @@ export default function Config() {
     const { config }                                            = usePage<SharedData & { config: Config }>().props;
     const { languages }                                         = usePage<SharedData & { languages: Language[] }>().props;
     const { interests }                                         = usePage<SharedData & { interests: Interest[] }>().props;
-    const { skillCategories }                                   = usePage<SharedData & { skillCategories: SkillCategory[] }>().props as SharedData & { skillCategories: SkillCategory[] };
+    const { skillCategories }                                   = usePage<SharedData & { skillCategories: SkillCategory[] }>().props;
+    const { skills }                                            = usePage<SharedData & { skills: SkillCategory[] }>().props;
     const { data, setData, post, processing, reset, errors }    = useForm<{ job: string, description: string, _method: string }>({
         job:            config.job.fr,
         description:    config.description.fr,
         _method:        'PUT',
     });
-
-    const [openLanguageModal, setOpenLanguageModal] = useState<boolean>(false);
-    const [openInterestModal, setOpenInterestModal] = useState<boolean>(false);
-    const [openSkillModal, setOpenSkillModal] = useState<boolean>(false);
+    const [openLanguageModal, setOpenLanguageModal]             = useState<boolean>(false);
+    const [openInterestModal, setOpenInterestModal]             = useState<boolean>(false);
+    const [openSkillCategoryModal, setOpenSkillCategoryModal]   = useState<boolean>(false);
+    const [openSkillModal, setOpenSkillModal]                   = useState<boolean>(false);
 
     const handleUpdateJob = (e: FormEvent) => {
         e.preventDefault();
@@ -102,24 +106,30 @@ export default function Config() {
                     <div className="flex items-center gap-3 w-full m-2">
                         <p className="text-lg font-semibold mb-2">Compétences</p>
                         <div className="ml-auto">
-                            <Button>
-
-                            </Button>
-                            <CreateSkillCategoryModal open={openSkillModal} setOpen={setOpenSkillModal} />
+                            <SkillModal skills={skills} open={openSkillModal} setOpen={setOpenSkillModal} />
+                            <CreateSkillCategoryModal open={openSkillCategoryModal} setOpen={setOpenSkillCategoryModal} />
                         </div>
                     </div>
 
                     <div className="flex flex-col h-full gap-4">
                         { skillCategories.map(skillCategory => {
+                            console.log(skillCategory.skill_ids)
                             return (
                                 <div key={`skill-categroy-${skillCategory.id}`} className="flex-1 rounded-lg border p-4 bg-muted text-muted-foreground shadow-sm">
                                     <div className="flex items-center gap-3 w-full">
                                         <DynamicIcon name={skillCategory.svg} />
                                         <span className="text-medium">{skillCategory.name.fr}</span>
-                                        <Button className="ml-auto">
-                                            <Plus />
-                                        </Button>
+                                        <div className="ml-auto">
+                                            <AttachSkillCategoryModal skillCategory={skillCategory} skills={skills} />
+                                            <DeleteModal id={skillCategory.id} routeName="skill.category.destroy" message={`Voulez-vous vraiment supprimer la catégorie de compétence ${skillCategory.name.fr} ?`} />
+                                        </div>
                                     </div>
+                                    {skills.filter(skill => skillCategory.skill_ids.includes(skill.id)).map((skill, index) => (
+                                        <div key={`category-${skillCategory.id}-skill-${skill.id}`} className="m-2">
+                                            <p className="text-sm font-medium">{skill.name.fr}</p>
+                                            {index < skills.length - 1 && <Separator />}
+                                        </div>
+                                    ))}
                                 </div>
                             )
                         }) }

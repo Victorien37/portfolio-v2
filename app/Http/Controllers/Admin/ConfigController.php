@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateConfigThemeRequest;
 use App\Models\Config;
 use App\Models\Interest;
 use App\Models\Language;
+use App\Models\Skill;
 use App\Models\SkillCategory;
 use App\Services\TranslationService;
 use Illuminate\Http\RedirectResponse;
@@ -29,13 +30,23 @@ class ConfigController extends Controller
         $config             = Config::first();
         $languages          = Language::all();
         $interests          = Interest::all();
-        $skillCategories    = SkillCategory::all();
+        $skills             = Skill::all();
+
+        $skillCategories = SkillCategory::with('skills:id')->get()
+        ->map(function ($category) {
+            // Remplace la relation par un tableau des IDs
+            $category->skill_ids = $category->skills->pluck('id')->toArray();
+            return $category;
+        });
+
+
 
         return Inertia::render('admin/config', [
             'config'            => $config,
             'languages'         => $languages,
             'interests'         => $interests,
             'skillCategories'   => $skillCategories,
+            'skills'            => $skills,
         ]);
     }
 
