@@ -136,18 +136,10 @@ export interface Achivement {
     [key: string]:  unknown;
 }
 
-interface SkillType {
-    id:         number;
-    name:       Multilingual;
-    created_at: string;
-    updated_at: string;
-}
-
 export interface Skill {
     id:             number;
     svg:            string;
     name:           Multilingual;
-    type?:          SkillType;
     created_at:     string;
     updated_at:     string;
     [key: string]:  unknown;

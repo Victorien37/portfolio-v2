@@ -25,7 +25,6 @@ import { CreateInterestModal } from "@/components/modals/interest/create-interes
 import { Emoji } from "emoji-picker-react";
 import { EditInterestModal } from "@/components/modals/interest/edit-interest-modal";
 import { DisplayIcon } from "@/components/personnal/dynamic-icon";
-import { SkillTypeModal } from "@/components/modals/skill/skill-type-modal";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -104,7 +103,6 @@ export default function Config() {
                     <div className="flex items-center gap-3 w-full m-2">
                         <p className="text-lg font-semibold mb-2">Compétences</p>
                         <div className="ml-auto">
-                            <SkillTypeModal skillTypes={skillTypes} open={openSkillTypeModal} setOpen={setOpenSkillTypeModal} />
                             <Button>
                                 <Plus />
                             </Button>

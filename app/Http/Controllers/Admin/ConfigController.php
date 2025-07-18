@@ -9,7 +9,6 @@ use App\Models\Config;
 use App\Models\Interest;
 use App\Models\Language;
 use App\Models\Skill;
-use App\Models\SkillType;
 use App\Services\TranslationService;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -31,14 +30,12 @@ class ConfigController extends Controller
         $languages  = Language::all();
         $interests  = Interest::all();
         $skills     = Skill::all();
-        $skillTypes = SkillType::all();
 
         return Inertia::render('admin/config', [
             'config'    => $config,
             'languages' => $languages,
             'interests' => $interests,
             'skills'    => $skills,
-            'skillTypes' => $skillTypes,
         ]);
     }
 

@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\InterestController;
-use App\Http\Controllers\Admin\SkillTypeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -23,10 +22,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::delete('/{interest}', [InterestController::class, 'destroy'])->name('interest.destroy');
             });
             Route::group(['prefix' => 'skills'], function () {
-                Route::group(['prefix' => 'types'], function () {
-                    Route::post('/', [SkillTypeController::class, 'store'])->name('skill.type.store');
-                    Route::delete('/{skillType}', [SkillTypeController::class, 'destroy'])->name('skill.type.destroy');
-                });
             });
         });
     });
