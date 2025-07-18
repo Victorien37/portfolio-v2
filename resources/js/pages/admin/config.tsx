@@ -10,11 +10,10 @@ import {
     type BreadcrumbItem,
     type Language,
     type Interest,
-    Skill,
-    SkillType
+    type SkillCategory,
 } from "@/types";
 import { Head, useForm, usePage } from "@inertiajs/react";
-import { Plus, Save, Type } from "lucide-react";
+import { Plus, Save } from "lucide-react";
 import { CreateLanguageModal } from "../../components/modals/language/create-language-modal";
 import { FormEvent, useState } from "react";
 import { ConfigTheme } from "@/components/personnal/config-theme";
@@ -24,7 +23,8 @@ import { toast } from "sonner";
 import { CreateInterestModal } from "@/components/modals/interest/create-interest-modal";
 import { Emoji } from "emoji-picker-react";
 import { EditInterestModal } from "@/components/modals/interest/edit-interest-modal";
-import { DisplayIcon } from "@/components/personnal/dynamic-icon";
+import { DynamicIcon } from "@/components/personnal/dynamic-icon";
+import { CreateSkillCategoryModal } from "@/components/modals/skill/create-skill-category-modal";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -38,9 +38,8 @@ export default function Config() {
     const { config }                                            = usePage<SharedData & { config: Config }>().props;
     const { languages }                                         = usePage<SharedData & { languages: Language[] }>().props;
     const { interests }                                         = usePage<SharedData & { interests: Interest[] }>().props;
-    const { skills }                                            = usePage<SharedData & { skills: Skill[] }>().props;
-    const { skillTypes }                                        = usePage<SharedData & { skillTypes: SkillType[] }>().props;
-    const { data, setData, post, processing, reset, errors }     = useForm<{ job: string, description: string, _method: string }>({
+    const { skillCategories }                                   = usePage<SharedData & { skillCategories: SkillCategory[] }>().props as SharedData & { skillCategories: SkillCategory[] };
+    const { data, setData, post, processing, reset, errors }    = useForm<{ job: string, description: string, _method: string }>({
         job:            config.job.fr,
         description:    config.description.fr,
         _method:        'PUT',
@@ -48,7 +47,7 @@ export default function Config() {
 
     const [openLanguageModal, setOpenLanguageModal] = useState<boolean>(false);
     const [openInterestModal, setOpenInterestModal] = useState<boolean>(false);
-    const [openSkillTypeModal, setOpenSkillTypeModal] = useState<boolean>(false);
+    const [openSkillModal, setOpenSkillModal] = useState<boolean>(false);
 
     const handleUpdateJob = (e: FormEvent) => {
         e.preventDefault();
@@ -104,18 +103,19 @@ export default function Config() {
                         <p className="text-lg font-semibold mb-2">Compétences</p>
                         <div className="ml-auto">
                             <Button>
-                                <Plus />
+
                             </Button>
+                            <CreateSkillCategoryModal open={openSkillModal} setOpen={setOpenSkillModal} />
                         </div>
                     </div>
 
                     <div className="flex flex-col h-full gap-4">
-                        { skills.map(skill => {
+                        { skillCategories.map(skillCategory => {
                             return (
-                                <div key={`skill-${skill.id}`} className="flex-1 rounded-lg border p-4 bg-muted text-muted-foreground shadow-sm">
+                                <div key={`skill-categroy-${skillCategory.id}`} className="flex-1 rounded-lg border p-4 bg-muted text-muted-foreground shadow-sm">
                                     <div className="flex items-center gap-3 w-full">
-                                        <DisplayIcon icon={skill.svg} />
-                                        <span className="text-medium">{skill.name.fr}</span>
+                                        <DynamicIcon name={skillCategory.svg} />
+                                        <span className="text-medium">{skillCategory.name.fr}</span>
                                         <Button className="ml-auto">
                                             <Plus />
                                         </Button>

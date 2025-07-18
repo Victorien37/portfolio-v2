@@ -8,7 +8,7 @@ use App\Http\Requests\UpdateConfigThemeRequest;
 use App\Models\Config;
 use App\Models\Interest;
 use App\Models\Language;
-use App\Models\Skill;
+use App\Models\SkillCategory;
 use App\Services\TranslationService;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -26,16 +26,16 @@ class ConfigController extends Controller
 
     public function index() : Response
     {
-        $config     = Config::first();
-        $languages  = Language::all();
-        $interests  = Interest::all();
-        $skills     = Skill::all();
+        $config             = Config::first();
+        $languages          = Language::all();
+        $interests          = Interest::all();
+        $skillCategories    = SkillCategory::all();
 
         return Inertia::render('admin/config', [
-            'config'    => $config,
-            'languages' => $languages,
-            'interests' => $interests,
-            'skills'    => $skills,
+            'config'            => $config,
+            'languages'         => $languages,
+            'interests'         => $interests,
+            'skillCategories'   => $skillCategories,
         ]);
     }
 

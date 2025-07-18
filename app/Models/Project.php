@@ -31,8 +31,8 @@ class Project extends Model
         return $this->hasOne(Experience::class);
     }
 
-    public function technologies() : BelongsToMany
+    public function skills() : BelongsToMany
     {
-        return $this->belongsToMany(Technology::class);
+        return $this->belongsToMany(Skill::class);
     }
 }

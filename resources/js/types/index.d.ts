@@ -106,10 +106,9 @@ export interface Link {
     [key: string]:  unknown;
 }
 
-export interface Technology {
+export interface Skill {
     id:             number;
     name:           Multilingual;
-    type:           'Backend' | 'Frontend' | 'Mobile' | 'Database';
     created_at:     string;
     updated_at:     string;
     [key: string]:  unknown;
@@ -136,7 +135,7 @@ export interface Achivement {
     [key: string]:  unknown;
 }
 
-export interface Skill {
+export interface SkillCategory {
     id:             number;
     svg:            string;
     name:           Multilingual;

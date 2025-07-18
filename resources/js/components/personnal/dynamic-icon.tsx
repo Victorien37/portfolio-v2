@@ -1,6 +1,17 @@
 import * as LucideIcons from "lucide-react";
+import { X } from "lucide-react";
 
-export const DisplayIcon = ({ icon }: { icon: string }) => {
-    const LucideIcon = LucideIcons[icon as keyof typeof LucideIcons];
-    return LucideIcon ? <LucideIcon className="w-6 h-6" /> : null;
-}
+type LucideIconProps = {
+  name: string;
+  className?: string;
+};
+
+export const DynamicIcon = ({ name, className = "w-8 h-8" }: LucideIconProps) => {
+  const IconComponent = (LucideIcons as any)[name];
+
+  if (!IconComponent) {
+    return <X className={className} />;
+  }
+
+  return <IconComponent className={className} />;
+};

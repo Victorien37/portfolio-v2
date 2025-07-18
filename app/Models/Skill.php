@@ -11,16 +11,21 @@ class Skill extends Model
     use HasTranslations;
 
     protected $fillable = [
-        'svg',
         'name',
+        'type'
     ];
 
     public $translatable = [
         'name'
     ];
 
-    public function technologies() : BelongsToMany
+    public function projects() : BelongsToMany
     {
-        return $this->belongsToMany(Technology::class);
+        return $this->belongsToMany(Project::class);
+    }
+
+    public function categories() : BelongsToMany
+    {
+        return $this->belongsToMany(SkillCategory::class);
     }
 }
