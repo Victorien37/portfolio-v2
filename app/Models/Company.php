@@ -11,7 +11,6 @@ class Company extends Model
         'name',
         'address',
         'city',
-        'road',
         'zipcode',
         'image'
     ];

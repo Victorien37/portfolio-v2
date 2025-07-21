@@ -4,19 +4,24 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { BookOpen, BriefcaseBusiness, Folder, GraduationCap, LayoutGrid, Settings } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutGrid,
-    },
-    {
         title: 'Configuration',
         href: '/admin/configs',
-        icon: LayoutGrid,
+        icon: Settings,
+    },
+    {
+        title: 'Formations',
+        href: '/admin/studies',
+        icon: GraduationCap,
+    },
+    {
+        title: 'Expériences',
+        href: '/admin/experiences',
+        icon: BriefcaseBusiness,
     }
 ];
 
@@ -27,7 +32,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
+                            <Link href={route('config.index')} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

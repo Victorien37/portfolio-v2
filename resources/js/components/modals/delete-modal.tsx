@@ -8,12 +8,13 @@ import { Trash2 } from "lucide-react";
 
 
 interface DeleteModalProps {
-    message: string;
-    routeName: string;
-    id: number;
+    message:    string;
+    routeName:  string;
+    id:         number;
+    title?:     string;
 }
 
-export function DeleteModal({ message, routeName, id }: DeleteModalProps) {
+export function DeleteModal({ message, routeName, id, title = "Supprimer un objet" }: DeleteModalProps) {
 
     const { data, setData, post, processing, reset, errors } = useForm<{_method: string}>({_method: 'DELETE'});
     const [open, setOpen] = useState<boolean>(false);
@@ -42,10 +43,10 @@ export function DeleteModal({ message, routeName, id }: DeleteModalProps) {
             <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
-                        <DialogTitle>Supprimer un objet</DialogTitle>
+                        <DialogTitle>{ title }</DialogTitle>
                     </DialogHeader>
                     <div className="grid gap-4">
-                        <div className="grid gap-3">
+                        <div className="grid gap-3 pt-4 pb-4">
                             <p>{ message }</p>
                         </div>
                     </div>

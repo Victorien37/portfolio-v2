@@ -18,9 +18,19 @@ class RegisteredUserController extends Controller
     /**
      * Show the registration page.
      */
-    public function create(): Response
+    public function create(): Response | RedirectResponse
     {
-        return Inertia::render('auth/register');
+        $hasUser = User::first();
+
+        if ($hasUser) {
+            if (request()->user()) {
+                return redirect()->route('config.index');
+            } else {
+                return redirect()->route('login');
+            }
+        } else {
+            return Inertia::render('auth/register');
+        }
     }
 
     /**
@@ -46,6 +56,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('config.index', absolute: false));
     }
 }

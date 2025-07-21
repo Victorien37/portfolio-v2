@@ -49,15 +49,17 @@ export interface User {
     [key: string]:      unknown; // This allows for additional properties...
 }
 
+export type MentionType = "assez_bien" | "bien" | "tres_bien" | null;
+
 export interface Study {
     id:             number;
     start:          Date;
     end:            Date | null;
     name:           Multilingual;
-    school:         string;
-    full_name:      string;
+    school:         Multilingual;
+    full_name:      Multilingual;
     obtained:       boolean;
-    mention:        'assez_bien' | 'bien' | 'tres_bien' | null;
+    mention:        MentionType;
     created_at:     string;
     updated_at:     string;
     [key: string]:  unknown;
@@ -145,13 +147,16 @@ export interface SkillCategory {
     [key: string]:  unknown;
 }
 
+export type ContractType = 'CDD' | 'CDI' | 'Alternance';
+
 export interface Experience {
     id:             number;
     start:          Date;
     end:            Date | null;
+    company?:       Company;
     job:            Multilingual;
     description:    Multilingual;
-    contract:       'CDD' | 'CDI' | 'Alternance' | 'Auto Entrepreneur';
+    contract:       ContractType;
     created_at:     string;
     updated_at:     string;
     [key: string]:  unknown;
