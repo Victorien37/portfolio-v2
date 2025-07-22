@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\ExperienceController;
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\InterestController;
+use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\SkillCategoryController;
 use App\Http\Controllers\Admin\SkillController;
 use App\Http\Controllers\Admin\StudyController;
@@ -44,6 +45,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::group(['prefix' => 'experiences'], function() {
             Route::get('/', [ExperienceController::class, 'index'])->name('experience.index');
             Route::post('/', [ExperienceController::class, 'store'])->name('experience.store');
+            Route::put('/{experience}', [ExperienceController::class, 'update'])->name('experience.update');
+            Route::delete('/{experience}', [ExperienceController::class, 'update'])->name('experience.destroy');
+        });
+        Route::group(['prefix' => 'projects'], function() {
+            Route::post('/', [ProjectController::class, 'store'])->name('project.store');
+            Route::put('/{project}', [ProjectController::class, 'update'])->name('project.update');
+            Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
         });
     });
 });

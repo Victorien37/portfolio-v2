@@ -24,7 +24,7 @@ class ExperienceController extends Controller
 
     public function index() : Response
     {
-        $experiences = Experience::with('company')->get();
+        $experiences = Experience::whereHas('company')->with('company', 'projects')->get();
 
         return Inertia::render('admin/experiences', [
             'experiences' => $experiences,
@@ -58,6 +58,31 @@ class ExperienceController extends Controller
             'description'   => $this->translator->translate($request->experience['description']),
             'contract'      => $request->experience['contract'],
         ]);
+
+        return redirect()->route('experience.index');
+    }
+
+    public function update(Request $request, Experience $experience) : RedirectResponse
+    {
+        $experience->update([
+            'start'         => Carbon::parse($request->start),
+            'end'           => $request?->end ? Carbon::parse($request->end) : null,
+            'job'           => $this->translator->translate($request->job),
+            'description'   => $this->translator->translate($request->description),
+            'contract'      => $request->contract,
+        ]);
+
+        return redirect()->route('experience.index');
+    }
+
+    public function destroy(Experience $experience) : RedirectResponse
+    {
+        if ($experience->projects()->count() > 0) { 
+            foreach ($experience->projects as $project) {
+                $project->delete();
+            }
+        }
+        $experience->delete();
 
         return redirect()->route('experience.index');
     }

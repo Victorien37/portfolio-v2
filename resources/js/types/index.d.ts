@@ -147,13 +147,23 @@ export interface SkillCategory {
     [key: string]:  unknown;
 }
 
+export interface Company {
+    id:         number;
+    name:       string;
+    address:    string;
+    city:       string
+    zipcode:    number;
+    image:      string;
+}
+
 export type ContractType = 'CDD' | 'CDI' | 'Alternance';
 
 export interface Experience {
     id:             number;
     start:          Date;
     end:            Date | null;
-    company?:       Company;
+    company:        Company;
+    projects?:      Project[];
     job:            Multilingual;
     description:    Multilingual;
     contract:       ContractType;

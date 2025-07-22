@@ -1,10 +1,15 @@
 import { DeleteModal } from "@/components/modals/delete-modal";
 import { CreateExperienceModal } from "@/components/modals/experience/create-experience-modal";
+import { EditExperienceModal } from "@/components/modals/experience/edit-experience-modal";
+import { CreateProjectModal } from "@/components/modals/project/create-project-modal";
+import { ShowProjectModal } from "@/components/modals/project/show-project-modal";
+import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AppLayout from "@/layouts/app-layout"
 import { frenchDate } from "@/lib/utils";
 import { BreadcrumbItem, Experience, SharedData } from "@/types"
 import { Head, usePage } from "@inertiajs/react";
+import { FolderPlus } from "lucide-react";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -35,26 +40,32 @@ export default function Experiences() {
                                 <TableHead className="text-center">Contrat</TableHead>
                                 <TableHead className="text-end">Actions</TableHead>
                             </TableRow>
+                            <TableRow></TableRow>
                         </TableHeader>
                         <TableBody>
                             { experiences.map(experience => {
                                 return (
-                                    <TableRow key={`experience-${experience.id}`}>
-                                        <TableCell className="text-start">
-                                            { experience?.company?.image && <img src={experience.company.image} width={25} className="inline mr-2" /> }
-                                            {experience?.company.name}
-                                        </TableCell>
-                                        <TableCell className="text-center">{experience.job.fr}</TableCell>
-                                        <TableCell className="text-center">Du {frenchDate(new Date(experience.start))} {experience?.end ? `au ${frenchDate(new Date(experience.end))}` : `à aujourd'hui`}</TableCell>
-                                        <TableCell className="text-center">{experience.contract}</TableCell>
-                                        <TableCell className="text-end">
-                                            <DeleteModal
-                                                id={experience.id}
-                                                routeName="study.destroy"
-                                                message={`Voulez-vous vraiment supprimer ${experience.job.fr} ?`}
-                                            />
-                                        </TableCell>
-                                    </TableRow>
+                                    <>
+                                        <TableRow key={`experience-${experience.id}`}>
+                                            <TableCell className="text-start">
+                                                { experience?.company?.image && <img src={experience.company.image} width={25} className="inline mr-2" /> }
+                                                {experience?.company.name}
+                                            </TableCell>
+                                            <TableCell className="text-center">{experience.job.fr}</TableCell>
+                                            <TableCell className="text-center">Du {frenchDate(new Date(experience.start))} {experience?.end ? `au ${frenchDate(new Date(experience.end))}` : `à aujourd'hui`}</TableCell>
+                                            <TableCell className="text-center">{experience.contract}</TableCell>
+                                            <TableCell className="text-end">
+                                                <CreateProjectModal experience={experience} />
+                                                { experience?.projects && experience.projects.length > 0 && <ShowProjectModal experience={experience} />  }
+                                                <EditExperienceModal experience={experience} />
+                                                <DeleteModal
+                                                    id={experience.id}
+                                                    routeName="study.destroy"
+                                                    message={`Voulez-vous vraiment supprimer ${experience.job.fr} ?`}
+                                                />
+                                            </TableCell>
+                                        </TableRow>
+                                    </>
                                 )
                             }) }
                         </TableBody>

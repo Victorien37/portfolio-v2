@@ -15,6 +15,7 @@ class Project extends Model
         'title',
         'description_short',
         'description_long',
+        'experience_id',
         'url',
         'side',
         'in_progress'
