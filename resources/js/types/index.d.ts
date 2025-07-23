@@ -65,6 +65,8 @@ export interface Study {
     [key: string]:  unknown;
 }
 
+export type LanguageType = "fr" | "en" | "pt";
+
 export interface Language {
     id:             number;
     name:           Multilingual;

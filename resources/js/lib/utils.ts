@@ -7,6 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 export const contracts = ['CDD', 'CDI', 'Alternance'];
+export const languages = ['fr', 'en', 'pt'];
 
 const mentions = new Map<string, string>();
 mentions.set('assez_bien', 'Assez bien');
