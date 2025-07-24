@@ -46,7 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/', [ExperienceController::class, 'index'])->name('experience.index');
             Route::post('/', [ExperienceController::class, 'store'])->name('experience.store');
             Route::put('/{experience}', [ExperienceController::class, 'update'])->name('experience.update');
-            Route::delete('/{experience}', [ExperienceController::class, 'update'])->name('experience.destroy');
+            Route::delete('/{experience}', [ExperienceController::class, 'destroy'])->name('experience.destroy');
         });
         Route::group(['prefix' => 'projects'], function() {
             Route::post('/', [ProjectController::class, 'store'])->name('project.store');

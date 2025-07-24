@@ -8,9 +8,9 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { contracts } from "@/lib/utils";
-import { ContractType } from "@/types";
+import { Company, ContractType } from "@/types";
 import { useForm } from "@inertiajs/react"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { toast } from "sonner";
 
 
@@ -40,17 +40,22 @@ type ExperienceForm = {
     };
 }
 
-export function CreateExperienceModal() {
+type CreateExperienceModalProps = {
+    companies: Company[];
+}
+
+export const CreateExperienceModal: React.FC<CreateExperienceModalProps> = ({ companies }) => {
     const [open, setOpen] = useState<boolean>(false);
     const [step, setStep] = useState<0 | 1>(0);
     const [hasCompany, setHasCompany] = useState<boolean>(false);
 
     const { data, setData, post, errors, reset } = useForm<{
         company: {
-            name:       string | null;
-            address:    string | null;
-            city:       string | null;
-            zipcode:    number | null;
+            id:         number | null;
+            name:       string;
+            address:    string;
+            city:       string;
+            zipcode:    number;
             image:      Blob | null;
         };
         experience: {
@@ -62,10 +67,11 @@ export function CreateExperienceModal() {
         };
     }>({
         company: {
-            name:       null,
-            address:    null,
-            city:       null,
-            zipcode:    null,
+            id:         null,
+            name:       "",
+            address:    "",
+            city:       "",
+            zipcode:    0,
             image:      null,
         },
         experience: {
@@ -98,13 +104,24 @@ export function CreateExperienceModal() {
     const prevStep = () => setStep(s => (s === 1 ? 0 : 0));
 
     const nextStepDisabled = () =>  {
-        if (step === 0 && hasCompany) {
-            return data.company?.address === "" || data.company?.city === "" || data.company?.name === "" || data.company?.zipcode === 0;
+        if (step === 0) {
+            if (!hasCompany && data.company.id !== null) {
+                return false;
+            } else if (hasCompany && data.company.id === null) {
+                return data.company?.address === "" || data.company?.city === "" || data.company?.name === "" || data.company?.zipcode === 0;
+            } else {
+                return true;
+            }
         } else if (step === 1) {
             return data.experience.job === "" || data.experience.description === "";
         } else {
             return false;
         }
+    }
+
+    const handleSwitchHasCompany = (bool: boolean) => {
+        updateData('company', 'id', null);
+        setHasCompany(bool);
     }
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -146,11 +163,11 @@ export function CreateExperienceModal() {
                                     <Switch
                                         id="has-company"
                                         checked={hasCompany}
-                                        onCheckedChange={bool => setHasCompany(bool)}
+                                        onCheckedChange={bool => handleSwitchHasCompany(bool)}
                                     />
                                     <Label htmlFor="has-company">Ajouter une entreprise ?</Label>
                                 </div>
-                                { hasCompany && (
+                                { hasCompany ? (
                                     <>
                                         <div className="grid gap-3 pt-4">
                                             <Label htmlFor="company-name">Nom</Label>
@@ -173,6 +190,28 @@ export function CreateExperienceModal() {
                                                 onFileSelected={(file) => updateData("company", "image", file)}
                                                 initialFile={data.company?.image ? new File([data.company.image], "image.jpg", { type: data.company.image.type }) : null}
                                             />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="grid gap-3 pt-4 pb-3">
+                                            <Select
+                                                value={data.company?.id?.toString()}
+                                                onValueChange={e => updateData('company', 'id', parseInt(e))}
+                                            >
+                                                <SelectTrigger className="w-full">
+                                                    <SelectValue placeholder="Selectionnez une entreprise" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectGroup>
+                                                        { companies.map(company => {
+                                                            return (
+                                                                <SelectItem key={`company-${company.id}`} value={company.id.toString()}>{company.name}</SelectItem>
+                                                            )
+                                                        }) }
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
                                         </div>
                                     </>
                                 ) }
@@ -221,7 +260,7 @@ export function CreateExperienceModal() {
                     <DialogFooter>
                         {step > 0 && <Button type="button" onClick={prevStep}>Précédent</Button>}
                         {step < 1 ? (
-                            <Button type="button" onClick={nextStep} disabled={nextStepDisabled()}>{ step === 0 && !hasCompany ? "Passer" : "Suivant" }</Button>
+                            <Button type="button" onClick={nextStep} disabled={nextStepDisabled()}>Suivant</Button>
                         ) : (
                             <Button type="submit" disabled={nextStepDisabled()}>Créer</Button>
                         )}

@@ -19,12 +19,12 @@ createInertiaApp({
         const { config } = props.initialPage.props;
 
         root.render(
-            <ThemeProvider config={config}>
+            // <ThemeProvider config={config}>
                 <LanguageProvider>
                     <App {...props} />
                     <Toaster richColors />
                 </LanguageProvider>
-            </ThemeProvider>
+            // </ThemeProvider>
         );
     },
     progress: {

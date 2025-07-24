@@ -24,16 +24,24 @@ class ExperienceController extends Controller
 
     public function index() : Response
     {
-        $experiences = Experience::whereHas('company')->with('company', 'projects')->get();
+        $experiences = Experience::whereHas('company')
+            ->orderBy('end', 'DESC')
+            ->with('company', 'projects')
+            ->get();
+
+        $companies = Company::all();
 
         return Inertia::render('admin/experiences', [
             'experiences' => $experiences,
+            'companies'     => $companies,
         ]);
     }
 
     public function store(Request $request, ImageService $imageService) : RedirectResponse
     {
-        if ($request->company['name']) {
+        if ($request->company['id']) {
+            $company = Company::findOrFail($request->company['id']);
+        } else {
             if ($request->company['image']) {
                 $imagePath = $imageService->upload($request->company['image']);
             } else {
@@ -46,14 +54,12 @@ class ExperienceController extends Controller
                 'zipcode'   => $request->company['zipcode'],
                 'image'     => $imagePath,
             ]);
-        } else {
-            $company = null;
         }
 
         Experience::create([
             'start'         => Carbon::parse($request->experience['start']),
             'end'           => $request->experience['end'] ? Carbon::parse($request->experience['end']) : null,
-            'company_id'    => $company?->id,
+            'company_id'    => $company->id,
             'job'           => $this->translator->translate($request->experience['job']),
             'description'   => $this->translator->translate($request->experience['description']),
             'contract'      => $request->experience['contract'],

@@ -13,17 +13,27 @@ use Inertia\Inertia;
 
 class FrontController extends Controller
 {
+    protected Config $config;
+
+    public function __construct()
+    {
+        $this->config = Config::first();
+    }
+
     public function index() : Response
     {
         $user           = User::first();
-        $config         = Config::first();
-        $experiences    = Experience::whereHas('company')->with('company', 'projects')->get();
+        $experiences    = Experience::whereHas('company')
+            ->orderBy('end', 'DESC')
+            ->with('company', 'projects')
+            ->get();
+        
         $sides          = Project::where('side', true)->get();
         $studies        = Study::all();
 
         return Inertia::render('welcome', [
             'user'          => $user,
-            'config'        => $config,
+            'config'        => $this->config,
             'experiences'   => $experiences,
             'sides'         => $sides,
             'studies'       => $studies,

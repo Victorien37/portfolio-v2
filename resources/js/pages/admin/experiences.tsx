@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AppLayout from "@/layouts/app-layout"
 import { frenchDate } from "@/lib/utils";
-import { BreadcrumbItem, Experience, SharedData } from "@/types"
+import { BreadcrumbItem, Company, Experience, SharedData } from "@/types"
 import { Head, usePage } from "@inertiajs/react";
 import { FolderPlus } from "lucide-react";
 
@@ -20,15 +20,15 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Experiences() {
 
-    const { experiences } = usePage<SharedData & { experiences: Experience[] }>().props;
-    console.log(experiences);
+    const { experiences }   = usePage<SharedData & { experiences: Experience[] }>().props;
+    const { companies }     = usePage<SharedData & { companies: Company[] }>().props;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Formations" />
             <div className="flex flex-col gap-6 p-4">
                 <div className="flex justify-end">
-                    <CreateExperienceModal />
+                    <CreateExperienceModal companies={companies} />
                 </div>
                 <div className="w-full overflow-x-auto">
                     <Table className="w-full">
@@ -60,7 +60,7 @@ export default function Experiences() {
                                                 <EditExperienceModal experience={experience} />
                                                 <DeleteModal
                                                     id={experience.id}
-                                                    routeName="study.destroy"
+                                                    routeName="experience.destroy"
                                                     message={`Voulez-vous vraiment supprimer ${experience.job.fr} ?`}
                                                 />
                                             </TableCell>

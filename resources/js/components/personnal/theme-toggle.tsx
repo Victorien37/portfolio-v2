@@ -1,10 +1,12 @@
-import { useTheme } from "@/contexts/ThemeContext"
 import { Button } from "../ui/button";
 import { Moon, Sun } from "lucide-react";
+import React from "react";
+import { Config } from "@/types";
+import { useThemeConfig } from "@/hooks/use-theme-config";
 
 
-export const ThemeToggle = () => {
-    const { theme, toggleTheme } = useTheme();
+export const ThemeToggle: React.FC<{ config: Config }> = ({ config }) => {
+    const { theme, toggleTheme } = useThemeConfig(config);
 
     return (
         <Button
