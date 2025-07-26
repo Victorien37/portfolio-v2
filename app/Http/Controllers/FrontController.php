@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Config;
 use App\Models\Experience;
+use App\Models\Interest;
+use App\Models\Language;
 use App\Models\Project;
+use App\Models\Skill;
+use App\Models\SkillCategory;
 use App\Models\Study;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,14 +31,19 @@ class FrontController extends Controller
             ->orderBy('end', 'DESC')
             ->with('company', 'projects')
             ->get();
-        
+        $skills         = SkillCategory::with('skills')->get();
         $sides          = Project::where('side', true)->get();
         $studies        = Study::all();
+        $languages      = Language::all();
+        $interests      = Interest::all();
 
         return Inertia::render('welcome', [
             'user'          => $user,
             'config'        => $this->config,
             'experiences'   => $experiences,
+            'skillCategories' => $skills,
+            'interests'     => $interests,
+            'languages'     => $languages,
             'sides'         => $sides,
             'studies'       => $studies,
         ]);
