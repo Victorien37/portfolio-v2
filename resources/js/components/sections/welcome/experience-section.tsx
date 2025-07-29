@@ -78,7 +78,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
                                     <div className={`absolute left-2 w-4 h-4 bg-primary rounded-full border-4 border-background shadow-lg transition-all duration-500 ${visibleItems.includes(index) ? 'scale-100' : 'scale-0'}`}></div>
 
                                     <div 
-                                        className="bg-background/50 p-6 rounded-lg border border-primary/30 hover:border-primary/50 hover:bg-background/70 transition-all duration-300 cursor-pointer group"
+                                        className="bg-background/50 p-6 rounded-lg border border-secondary/30 hover:border-primary/50 hover:bg-background/70 transition-all duration-300 cursor-pointer group"
                                         onClick={() => route('experience.show', experience.id)}
                                     >
                                         <div className="flex flex-wrap items-center gap-2 mb-4">
@@ -118,7 +118,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
                                     className="bg-background border border-primary text-primary hover:bg-primary hover:text-background"
                                 >
                                     <Plus className="w-4 h-4 mr-2" />
-                                    Voir plus d'expériences
+                                    {t('more')}
                                 </Button>
                             </div>
                         )}

@@ -22,19 +22,19 @@ export function LanguageSelector() {
                 <Button
                     variant="outline"
                     size="sm"
-                    className="border-gray-600 hover:bg-yellow-400/20 hover:border-yellow-400/50"
+                    className="border-secondary hover:bg-primary/20 hover:border-primary/50"
                 >
-                    <Globe className="w-4 h-4 mr-2 text-yellow-400" />
+                    <Globe className="w-4 h-4 mr-2 text-primary" />
                     { currentLanguage?.flag }
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-gray-800 border-gray-700">
+            <DropdownMenuContent className="bg-background border-background">
                 { languages.map(lang => {
                     return (
                         <DropdownMenuItem
                             key={lang.code}
                             onClick={() => setLanguage(lang.code)}
-                            className="text-white hover:bg-gray-700 cursor-pointer"
+                            className="text-secondary hover:bg-secondary cursor-pointer"
                         >
                             <span className="mr-2">{lang.flag}</span>
                             { lang.name }

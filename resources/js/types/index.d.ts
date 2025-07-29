@@ -143,7 +143,7 @@ export interface SkillCategory {
     id:             number;
     svg:            string;
     name:           Multilingual;
-    skill_ids?:      number[];
+    skill_ids?:     number[];
     skills?:        Skill[];
     created_at:     string;
     updated_at:     string;

@@ -42,7 +42,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ user, config }) 
                     </div>
                     <div className="flex items-center justify-center lg:justify-start gap-2">
                         <span className="text-primary">🚗</span>
-                        <span className='text-secondary'>Permis B et véhicule</span>
+                        <span className='text-secondary'>{t('car')}</span>
                     </div>
                     <div className="flex items-center justify-center lg:justify-start gap-2">
                         <Phone className="w-4 h-4 text-primary" />
