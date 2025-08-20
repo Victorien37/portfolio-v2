@@ -27,7 +27,7 @@ export const SideProjectSection: React.FC<SideProjectSectionProps> = ({ projects
                     {projects.map((project, index) => (
                         <div 
                             key={index} 
-                            className="bg-gray-700/50 p-6 rounded-lg border border-gray-600/50 hover:border-primary/30 transition-all duration-300 cursor-pointer"
+                            className="p-6 rounded-lg border border-secondary/50 hover:border-primary/30 transition-all duration-300 cursor-pointer"
                             // onClick={() => window.open(project.url, '_blank')}
                         >
                             <div className="flex items-center gap-3 mb-4">

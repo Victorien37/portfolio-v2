@@ -53,5 +53,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('/{project}', [ProjectController::class, 'update'])->name('project.update');
             Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
         });
+        Route::group(['prefix' => 'side-projects'], function() {
+            Route::get('/', [ProjectController::class, 'sideProjects'])->name('project.side.index');
+        });
     });
 });

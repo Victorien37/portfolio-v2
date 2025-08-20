@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Config;
 use App\Models\Experience;
 use App\Models\Interest;
@@ -11,6 +12,9 @@ use App\Models\Skill;
 use App\Models\SkillCategory;
 use App\Models\Study;
 use App\Models\User;
+use Error;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
 use Inertia\Inertia;
@@ -47,5 +51,30 @@ class FrontController extends Controller
             'sides'         => $sides,
             'studies'       => $studies,
         ]);
+    }
+
+    public function experience(string $companyName, string $start) : Response
+    {
+        $company    = Company::where('name', $companyName)->first();
+        $experience = Experience::where('start', $start)
+            ->where('company_id', $company->id)
+            ->with('company', 'projects')
+            ->first();
+
+        return Inertia::render('experience', [
+            'config'        => $this->config,
+            'experience'    => $experience,
+        ]);
+    }
+
+    public function contact(Request $request) : RedirectResponse | JsonResponse
+    {
+        if ($request->honeypot !== "") {
+            return response()->json([
+                'message' => 'Erreur interne simulée depuis le backend 🚨'
+            ], 500);
+        } 
+
+        return redirect()->route('home');
     }
 }

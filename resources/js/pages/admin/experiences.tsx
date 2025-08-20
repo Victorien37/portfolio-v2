@@ -3,13 +3,11 @@ import { CreateExperienceModal } from "@/components/modals/experience/create-exp
 import { EditExperienceModal } from "@/components/modals/experience/edit-experience-modal";
 import { CreateProjectModal } from "@/components/modals/project/create-project-modal";
 import { ShowProjectModal } from "@/components/modals/project/show-project-modal";
-import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AppLayout from "@/layouts/app-layout"
 import { frenchDate } from "@/lib/utils";
 import { BreadcrumbItem, Company, Experience, SharedData } from "@/types"
 import { Head, usePage } from "@inertiajs/react";
-import { FolderPlus } from "lucide-react";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -40,7 +38,6 @@ export default function Experiences() {
                                 <TableHead className="text-center">Contrat</TableHead>
                                 <TableHead className="text-end">Actions</TableHead>
                             </TableRow>
-                            <TableRow></TableRow>
                         </TableHeader>
                         <TableBody>
                             { experiences.map(experience => {

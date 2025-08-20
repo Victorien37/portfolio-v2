@@ -19,7 +19,7 @@ export default {
             title: "Informations de contact",
             tel: "Téléphone",
             email: "Adresse mail",
-            location: "Location"
+            location: "Localisation"
         },
         form: {
             title: "Envoyez-moi un message",

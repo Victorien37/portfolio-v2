@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/use-translation";
 import { Experience } from "@/types";
+import { router } from "@inertiajs/react";
 import { ArrowRight, Calendar, Plus } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -79,7 +80,11 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
 
                                     <div 
                                         className="bg-background/50 p-6 rounded-lg border border-secondary/30 hover:border-primary/50 hover:bg-background/70 transition-all duration-300 cursor-pointer group"
-                                        onClick={() => route('experience.show', experience.id)}
+                                        // onClick={() => route('experience.show', {'companyName': experience.company.name, 'start': experience.start})}
+                                        onClick={() => router.visit(
+                                            route('experience.show', { companyName: experience.company.name, start: experience.start })
+                                        )}
+                                        // onClick={() => console.log('click')}
                                     >
                                         <div className="flex flex-wrap items-center gap-2 mb-4">
                                             <Calendar className="w-4 h-4" />

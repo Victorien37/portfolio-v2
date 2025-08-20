@@ -126,13 +126,15 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ user }) => {
                                 />
                             </div>
                             <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-secondary mb-2">{t('contact.form.labels.email')}</label>
-                            <input
-                                type="email"
-                                id="email"
-                                className="w-full px-4 py-3 bg-background border border-secondary rounded-lg text-secondary placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
-                                placeholder={t('contact.form.placeholders.email')}
-                            />
+                                <label htmlFor="email" className="block text-sm font-medium text-secondary mb-2">{t('contact.form.labels.email')}</label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    className="w-full px-4 py-3 bg-background border border-secondary rounded-lg text-secondary placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                                    placeholder={t('contact.form.placeholders.email')}
+                                />
+
+                                <input type="hidden" name="honeypot" id="honeypot" />
                             </div>
                         </div>
 
@@ -158,7 +160,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ user }) => {
 
                         <button
                             type="submit"
-                            className="w-full bg-gradient-to-r from-primary to-primary-dark text-secondary font-semibold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center gap-3 group"
+                            className="w-full bg-gradient-to-r from-primary to-primary-dark text-secondary font-semibold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center gap-3 group hover:to-primary/35"
                         >
                             <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             {t('contact.form.labels.send')}
@@ -169,7 +171,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ user }) => {
 
                 {/* Footer */}
                 <div className="mt-16 pt-8 border-t border-gray-700 text-center">
-                    <p className="text-gray-400">© 2025 - { new Date().getFullYear() } Victorien Rodrigues. {t('footer')} Tours, France.</p>
+                    <p className="text-gray-400">© 2025 { new Date().getFullYear() !== 2025 ? `- ${new Date().getFullYear()}` : '' } Victorien Rodrigues. {t('footer')} Tours, France.</p>
                 </div>
             </div>
         </section>
