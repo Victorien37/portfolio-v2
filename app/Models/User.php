@@ -24,6 +24,10 @@ class User extends Authenticatable
         'tel',
         'email',
         'password',
+        'cv',
+        'github',
+        'gitlab',
+        'linkedin',
     ];
 
     /**

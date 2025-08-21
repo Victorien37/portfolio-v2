@@ -23,7 +23,11 @@ class UpdateConfigJobRequest extends FormRequest
     {
         return [
             'job'           => ['required', 'string'],
-            'description'   => ['required', 'string'], 
+            'description'   => ['required', 'string'],
+            'cv'            => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
+            'github'        => ['nullable', 'url'],
+            'gitlab'        => ['nullable', 'url'],
+            'linkedin'      => ['nullable', 'url'],
         ];
     }
 
@@ -34,6 +38,12 @@ class UpdateConfigJobRequest extends FormRequest
             'job.string'            => "Le nom du métier doit être une chaine de caractère",
             'description.required'  => "La description est obligatoire",
             'description.string'    => "La description doit être une chaine de caractère",
+            'cv.file'               => "Le CV doit être un fichier valide",
+            'cv.mimes'              => "Le CV doit être au format PDF",
+            'cv.max'                => "Le CV ne doit pas dépasser 2 Mo",
+            'github.url'            => "Le lien GitHub doit être une URL valide",
+            'gitlab.url'            => "Le lien GitLab doit être une URL valide",
+            'linkedin.url'          => "Le lien LinkedIn doit être une URL valide",
         ];
     }
 }

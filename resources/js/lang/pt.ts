@@ -1,6 +1,7 @@
 export default {
     years: "anos",
     car: "Carta de condução e veículo",
+    cv: "Baixe meu currículo",
     expro: "Experiências profissionais",
     today: "hoje",
     more: "Ver mais experiências",

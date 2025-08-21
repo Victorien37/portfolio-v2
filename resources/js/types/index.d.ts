@@ -44,6 +44,10 @@ export interface User {
     tel:                string;
     avatar?:            string;
     email_verified_at:  string | null;
+    cv:                 string | null;
+    github:             string | null;
+    gitlab:             string | null;
+    linkedin:           string | null;
     created_at:         string;
     updated_at:         string;
     [key: string]:      unknown; // This allows for additional properties...
@@ -174,3 +178,5 @@ export interface Experience {
     updated_at:     string;
     [key: string]:  unknown;
 }
+
+export type PdfFile = File & { type: "application/pdf" };

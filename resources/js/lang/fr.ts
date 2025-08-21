@@ -1,6 +1,7 @@
 export default {
     years: "ans",
     car: "Permis B et véhicule",
+    cv: "Télécharger mon CV",
     expro: "Expériences professionnelles",
     today: "aujourd'hui",
     more: "Voir plus d'expériences",

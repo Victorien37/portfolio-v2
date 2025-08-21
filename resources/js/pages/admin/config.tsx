@@ -11,9 +11,11 @@ import {
     type Language,
     type Interest,
     type SkillCategory,
+    User,
+    type PdfFile,
 } from "@/types";
-import { Head, useForm, usePage } from "@inertiajs/react";
-import { Plus, Save } from "lucide-react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
+import { FileDown, Plus, Save } from "lucide-react";
 import { CreateLanguageModal } from "../../components/modals/language/create-language-modal";
 import { FormEvent, useState } from "react";
 import { ConfigTheme } from "@/components/personnal/config-theme";
@@ -39,13 +41,18 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Config() {
 
     const { config }                                            = usePage<SharedData & { config: Config }>().props;
+    const { user }                                              = usePage<SharedData & { user: User }>().props;
     const { languages }                                         = usePage<SharedData & { languages: Language[] }>().props;
     const { interests }                                         = usePage<SharedData & { interests: Interest[] }>().props;
     const { skillCategories }                                   = usePage<SharedData & { skillCategories: SkillCategory[] }>().props;
     const { skills }                                            = usePage<SharedData & { skills: SkillCategory[] }>().props;
-    const { data, setData, post, processing, reset, errors }    = useForm<{ job: string, description: string, _method: string }>({
+    const { data, setData, post, processing, reset, errors }    = useForm<{ job: string, description: string, cv: PdfFile | null, github: string | null, gitlab: string | null, linkedin: string | null, _method: string }>({
         job:            config.job.fr,
         description:    config.description.fr,
+        cv:             null,
+        github:         user?.github,
+        gitlab:         user?.gitlab,
+        linkedin:       user?.linkedin,
         _method:        'PUT',
     });
     const [openLanguageModal, setOpenLanguageModal]             = useState<boolean>(false);
@@ -102,7 +109,70 @@ export default function Config() {
                             { data.description }
                         </Textarea>
                     </div>
-
+                    <div className="grid w-full items-center gap-3 p-2">
+                        <div className="flex items-center gap-2">
+                            <Label htmlFor="cv">CV <small>(pdf)</small></Label>
+                            {user?.cv !== null && (
+                                <a
+                                    href={user.cv}
+                                    download
+                                    className="flex items-center p-0 h-auto"
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    <Button type="button" variant="link" className="p-0 h-auto">
+                                        <FileDown />
+                                    </Button>
+                                </a>
+                            )}
+                        </div>
+                        <Input
+                            type="file"
+                            id="cv"
+                            name="cv"
+                            accept="application/pdf"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0] ?? null;
+                                if (file && file.type === "application/pdf") {
+                                    setData("cv", file as PdfFile);
+                                } else {
+                                    setData("cv", null);
+                                }
+                            }}
+                        />
+                    </div>
+                    <div className="grid w-full items-center gap-3 p-2">
+                        <Label htmlFor="github">Lien Github</Label>
+                        <Input
+                            type="url"
+                            id="github"
+                            name="github"
+                            placeholder="https://github.com/mon-profil"
+                            value={data.github ?? ""}
+                            onChange={e => setData('github', e.target.value)}
+                        />
+                    </div>
+                    <div className="grid w-full items-center gap-3 p-2">
+                        <Label htmlFor="gitlab">Lien Gitlab</Label>
+                        <Input
+                            type="url"
+                            id="gitlab"
+                            name="gitlab"
+                            placeholder="https://gitlab.com/mon-profil"
+                            value={data.gitlab ?? ""}
+                            onChange={e => setData('gitlab', e.target.value)}
+                        />
+                    </div>
+                    <div className="grid w-full items-center gap-3 p-2">
+                        <Label htmlFor="linkedin">Lien LinkedIn</Label>
+                        <Input
+                            type="url"
+                            id="linkedin"
+                            name="linkedin"
+                            placeholder="https://linkedin.com/in/mon-profil"
+                            value={data.linkedin ?? ""}
+                            onChange={e => setData('linkedin', e.target.value)}
+                        />
+                    </div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <Button title="Enregistrer" onClick={handleUpdateJob}>
                             <Save />

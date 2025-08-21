@@ -10,10 +10,13 @@ use App\Models\Interest;
 use App\Models\Language;
 use App\Models\Skill;
 use App\Models\SkillCategory;
+use App\Models\User;
 use App\Services\TranslationService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Str;
 
 class ConfigController extends Controller
 {
@@ -28,6 +31,7 @@ class ConfigController extends Controller
     public function index() : Response
     {
         $config             = Config::first();
+        $user               = User::first();
         $languages          = Language::all();
         $interests          = Interest::all();
         $skills             = Skill::all();
@@ -43,6 +47,7 @@ class ConfigController extends Controller
 
         return Inertia::render('admin/config', [
             'config'            => $config,
+            'user'              => $user,
             'languages'         => $languages,
             'interests'         => $interests,
             'skillCategories'   => $skillCategories,
@@ -78,6 +83,31 @@ class ConfigController extends Controller
         $config->update([
             'job'           => $this->translator->translate($request->job),
             'description'   => $this->translator->translate($request->description),
+        ]);
+
+        $user = User::first();
+
+        if ($request->hasFile('cv')) {
+
+            $path = "files/pdf";
+            $filename = "cv-" . Str::lower($user->firstname) . '-' . Str::lower($user->lastname) . '.pdf';
+            // Store the file as 'files/pdf/cv.pdf' in the 'public' disk
+            Storage::disk('public')->putFileAs($path, $request->file('cv'), $filename);
+
+            $fullPath = "/storage/$path/$filename";
+
+
+            if ($user->cv !== $fullPath) {
+                $user->update([
+                    'cv' => $fullPath,
+                ]);
+            }
+        }
+
+        $user->update([
+            'github'    => $request->github,
+            'gitlab'    => $request->gitlab,
+            'linkedin'  => $request->linkedin,
         ]);
 
         return redirect()->route('config.index');

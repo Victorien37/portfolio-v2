@@ -1,6 +1,7 @@
 export default {
     years: "years",
     car: "Driving license and vehicle",
+    cv: "Donwload my CV",
     expro: "Professional experiences",
     today: "today",
     more: "See more experiences",

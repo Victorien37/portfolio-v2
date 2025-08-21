@@ -2,7 +2,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslation } from "@/hooks/use-translation";
 import { Config, User } from "@/types";
 import { differenceInYears } from "date-fns";
-import { Github, Linkedin, Mail, Phone } from "lucide-react";
+import { Download, Github, Gitlab, Linkedin, Mail, Phone } from "lucide-react";
 import React from "react";
 
 type ProfileSectionProps = {
@@ -55,12 +55,26 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ user, config }) 
                     </div>
 
                     <div className="flex justify-center lg:justify-start gap-4">
-                    <a href="https://github.com/Victorien37" target='_blank' className="p-3 bg-primary/10 border border-primary/20 rounded-lg hover:bg-primary/20 transition-colors">
-                        <Github className="w-5 h-5 text-primary" />
-                    </a>
-                    <a href="https://www.linkedin.com/in/victorien-rodrigues-86a46a1a1/?original_referer=https%3A%2F%2Fwww%2Egoogle%2Ecom%2F&originalSubdomain=fr" target='_blank' className="p-3 bg-primary/10 border border-primary/20 rounded-lg hover:bg-yellow-400/20 transition-colors">
-                        <Linkedin className="w-5 h-5 text-primary" />
-                    </a>
+                        { user?.github && (
+                            <a href={user.github} target='_blank' className="p-3 bg-primary/10 border border-primary/20 rounded-lg hover:bg-primary/20 transition-colors">
+                                <Github className="w-5 h-5 text-primary" />
+                            </a>
+                        ) }
+                        { user?.gitlab && (
+                            <a href={user.gitlab} target='_blank' className="p-3 bg-primary/10 border border-primary/20 rounded-lg hover:bg-primary/20 transition-colors">
+                                <Gitlab className="w-5 h-5 text-primary" />
+                            </a>
+                        ) }
+                        { user?.linkedin && (
+                            <a href={user.linkedin} target='_blank' className="p-3 bg-primary/10 border border-primary/20 rounded-lg hover:bg-yellow-400/20 transition-colors">
+                                <Linkedin className="w-5 h-5 text-primary" />
+                            </a>
+                        ) }
+                        { user?.cv && (
+                            <a href={user.cv} download title={t('cv')} className="p-3 bg-primary/10 border border-primary/20 rounded-lg hover:bg-primary/20 transition-colors">
+                                <Download className="w-5 h-5 text-primary" />
+                            </a>
+                        ) }
                     </div>
                 </div>
 
