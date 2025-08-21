@@ -83,19 +83,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ user, config }) 
                     <div className="relative">
                         <h2 className="text-4xl lg:text-6xl font-bold text-secondary mb-4">{ t(config.job) }</h2>
                         <div className="w-100 h-1 bg-gradient-to-r from-primary to-primary-dark mb-6"></div>
-                        
-                        <p className="text-xl lg:text-2xl text-secondary mb-8 leading-relaxed">{ t(config.description) }</p>
-
-                        {/* <div className="grid md:grid-cols-2 gap-6">
-                            <div className="bg-gray-800/50 p-6 rounded-lg border border-gray-700/50">
-                                <h3 className="text-yellow-400 font-semibold mb-2">Expertise Frontend</h3>
-                                <p className="text-gray-300">React, TypeScript, Tailwind CSS</p>
-                            </div>
-                            <div className="bg-gray-800/50 p-6 rounded-lg border border-gray-700/50">
-                                <h3 className="text-yellow-400 font-semibold mb-2">Expertise Backend</h3>
-                                <p className="text-gray-300">Node.js, PHP, Bases de données</p>
-                            </div>
-                        </div> */}
+                            <p className="text-xl lg:text-2xl text-secondary mb-8 leading-relaxed">{ t(config.description) }</p>
                         </div>
                     </div>
                 </div>
