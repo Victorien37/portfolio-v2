@@ -31,9 +31,22 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ user }) => {
                 reset();
                 toast.success("Message envoyé ! Je vous répondrai rapidement.");
             },
-            onError: () => {
-                toast.error("Une erreur s'est produite lors de l'envoie du message");
-            }
+            onError: (errors) => {
+                // Affiche l'erreur personnalisée du backend si elle existe
+                if (errors.form) {
+                    toast.error(errors.form);
+                } else {
+                    // Affiche la première erreur trouvée sinon
+                    const firstError = Object.values(errors)[0];
+                    if (Array.isArray(firstError)) {
+                        toast.error(firstError[0]);
+                    } else if (typeof firstError === 'string') {
+                        toast.error(firstError);
+                    } else {
+                        toast.error("Une erreur s'est produite lors de l'envoi du message.");
+                    }
+                }
+            },
         });
     }
 
@@ -114,6 +127,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ user }) => {
                                     id="firstame"
                                     className="w-full px-4 py-3 bg-background border border-secondary rounded-lg text-secondary placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
                                     placeholder={t('contact.form.placeholders.firstname')}
+                                    onChange={e => setData('firstname', e.target.value)}
                                 />
                             </div>
                             <div>
@@ -123,6 +137,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ user }) => {
                                     id="lastname"
                                     className="w-full px-4 py-3 bg-background border border-secondary rounded-lg text-secondary placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
                                     placeholder={t('contact.form.placeholders.lastname')}
+                                    onChange={e => setData('lastname', e.target.value)}
                                 />
                             </div>
                             <div>
@@ -132,9 +147,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ user }) => {
                                     id="email"
                                     className="w-full px-4 py-3 bg-background border border-secondary rounded-lg text-secondary placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
                                     placeholder={t('contact.form.placeholders.email')}
+                                    onChange={e => setData('email', e.target.value)}
                                 />
 
-                                <input type="hidden" name="honeypot" id="honeypot" />
+                                <input type="text" className="invisible" name="honeypot" id="honeypot" onChange={e => setData('honeypot', e.target.value)} />
                             </div>
                         </div>
 
@@ -145,6 +161,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ user }) => {
                                 id="subject"
                                 className="w-full px-4 py-3 bg-background border border-secondary rounded-lg text-secondary placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
                                 placeholder={t('contact.form.placeholders.subject')}
+                                onChange={e => setData('subject', e.target.value)}
                             />
                         </div>
 
@@ -155,6 +172,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ user }) => {
                                 rows={6}
                                 className="w-full px-4 py-3 bg-background border border-secondary rounded-lg text-secondary placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none"
                                 placeholder={t('contact.form.placeholders.message')}
+                                onChange={e => setData('message', e.target.value)}
                             ></textarea>
                         </div>
 

@@ -29,14 +29,7 @@ class SkillCategoryController extends Controller
     }
 
     public function attach(Request $request, SkillCategory $skillCategory) {
-        foreach ($skillCategory->skills as $skill) {
-            $skillCategory->skills()->detach($skill->id);
-        }
-
-        foreach ($request->skills as $skillId) {
-            $skillCategory->skills()->attach($skillId);
-        }
-
+        $skillCategory->skills()->sync($request->skills ?? []);
         return redirect()->route('config.index');
     }
 

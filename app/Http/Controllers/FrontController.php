@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreContactRequest;
 use App\Models\Company;
 use App\Models\Config;
 use App\Models\Experience;
@@ -16,6 +17,7 @@ use Error;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Response;
 use Inertia\Inertia;
 
@@ -67,14 +69,23 @@ class FrontController extends Controller
         ]);
     }
 
-    public function contact(Request $request) : RedirectResponse | JsonResponse
+    public function contact(StoreContactRequest $request) : RedirectResponse
     {
-        if ($request->honeypot !== "") {
-            return response()->json([
-                'message' => 'Erreur interne simulée depuis le backend 🚨'
-            ], 500);
+        $key = 'contact-form:' . $request->ip();
+
+        if (RateLimiter::tooManyAttempts($key, 2)) {
+            return back()->withErrors([
+                'form' => 'Message bloqué, trop de tentatives !'
+            ]);
+        }
+        RateLimiter::hit($key, 3600);
+
+        if ($request->honeypot !== null) {
+            return back()->withErrors([
+                'form' => 'Les spams sont bloqués par le système',
+            ]);
         } 
 
-        return redirect()->route('home');
+        return back()->with('success', 'Message envoyé avec succès !');
     }
 }

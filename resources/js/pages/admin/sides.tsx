@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/front/navbar";
 import { DeleteModal } from "@/components/modals/delete-modal";
 import { CreateProjectModal } from "@/components/modals/project/create-project-modal";
+import { EditSideProjectModal } from "@/components/modals/project/edit-side-project-modal";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem, Config, Project, SharedData } from "@/types";
@@ -65,7 +66,7 @@ export default function Sides() {
                                             ) }
                                         </TableCell>
                                         <TableCell className="text-end">
-                                            {/* <EditStudyModal study={study} /> */}
+                                            <EditSideProjectModal project={project} />
                                             <DeleteModal
                                                 id={project.id}
                                                 routeName="project.side.destroy"

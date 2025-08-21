@@ -69,10 +69,19 @@ export default function Config() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Configuration" />
             <div
-                className="grid grid-cols-3 gap-4 rounded-xl p-4 overflow-x-auto"
+                className="
+                    grid
+                    grid-cols-1
+                    md:grid-cols-2
+                    lg:grid-cols-3
+                    gap-4
+                    rounded-xl
+                    p-4
+                    overflow-x-auto
+                "
                 style={{
-                    height: '150vh',
-                    gridTemplateRows: '32% 30% 30%',
+                    minHeight: '100vh',
+                    gridTemplateRows: 'auto',
                 }}
             >
                 {/* Ligne 1 */}
@@ -102,7 +111,7 @@ export default function Config() {
                 </div>
 
                 {/* Bloc vertical 2 lignes */}
-                <div className="relative h-full w-full overflow-y-auto rounded-xl border border-sidebar-border/70 dark:border-sidebar-border col-span-2 row-span-2 p-2">
+                <div className="relative h-full w-full overflow-y-auto rounded-xl border border-sidebar-border/70 dark:border-sidebar-border md:col-span-2 md:row-span-2 p-2">
                     <div className="flex items-center gap-3 w-full m-2">
                         <p className="text-lg font-semibold mb-2">Compétences</p>
                         <div className="ml-auto">
@@ -124,7 +133,7 @@ export default function Config() {
                                             <DeleteModal id={skillCategory.id} routeName="skill.category.destroy" message={`Voulez-vous vraiment supprimer la catégorie de compétence ${skillCategory.name.fr} ?`} />
                                         </div>
                                     </div>
-                                    {skills.filter(skill => skillCategory.skill_ids.includes(skill.id)).map((skill, index) => (
+                                    {skills.filter(skill => skillCategory?.skill_ids?.includes(skill.id)).map((skill, index) => (
                                         <div key={`category-${skillCategory.id}-skill-${skill.id}`} className="m-2">
                                             <p className="text-sm font-medium">{skill.name.fr}</p>
                                             {index < skills.length - 1 && <Separator />}

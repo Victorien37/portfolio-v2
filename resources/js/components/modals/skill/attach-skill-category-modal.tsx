@@ -18,10 +18,12 @@ export function AttachSkillCategoryModal({ skillCategory, skills }: AttachSkillC
 
     const [open, setOpen] = useState<boolean>(false);
 
+    
     const { data, setData, post, processing, reset, errors } = useForm<{skills: number[], _method: string}>({
-        skills: skillCategory.skills,
+        skills: skillCategory.skills?.map(s => typeof s === "number" ? s : s.id),
         _method: 'PUT'
     });
+    console.log(data.skills);
 
     const toggleSkill = (id: number) => {
         setData(
@@ -63,23 +65,21 @@ export function AttachSkillCategoryModal({ skillCategory, skills }: AttachSkillC
                             <ScrollArea className="max-h-[300px] border rounded-md p-2">
                                 <div className="space-y-3">
                                     {skills.map((skill) => (
-                                    <div key={skill.id} className="flex items-center gap-2">
-                                        <Checkbox
-                                            id={`skill-${skill.id}`}
-                                            checked={data.skills.includes(skill.id)}
-                                            onCheckedChange={() => toggleSkill(skill.id)}
-                                        />
-                                        <Label htmlFor={`skill-${skill.id}`} className="text-sm">
-                                            {skill.name.fr}
-                                        </Label>
-                                    </div>
+                                        <div key={skill.id} className="flex items-center gap-2">
+                                            <Checkbox
+                                                id={`skill-${skill.id}`}
+                                                checked={data.skills.includes(skill.id)}
+                                                onCheckedChange={() => toggleSkill(skill.id)}
+                                            />
+                                            <Label htmlFor={`skill-${skill.id}`} className="text-sm">
+                                                {skill.name.fr}
+                                            </Label>
+                                        </div>
                                     ))}
                                 </div>
                                 </ScrollArea>
 
-                                {errors.skills && (
-                                <p className="text-sm text-red-500">{errors.skills}</p>
-                                )}
+                                {errors.skills && ( <p className="text-sm text-red-500">{errors.skills}</p> )}
                         </div>
                     </div>
                     <DialogFooter>
