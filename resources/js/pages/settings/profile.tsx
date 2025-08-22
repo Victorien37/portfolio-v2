@@ -11,8 +11,9 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, ChevronDownIcon } from 'lucide-react';
+import { CalendarIcon, ChevronDownIcon, UserCheck } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
+import { ImagePicker } from '@/components/personnal/image-picker';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -22,22 +23,24 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 type ProfileForm = {
-    firstname: string;
-    lastname: string;
-    birthday: Date;
-    tel: string;
-    email: string;
+    avatar:     File | null;
+    firstname:  string;
+    lastname:   string;
+    birthday:   Date;
+    tel:        string;
+    email:      string;
 };
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<SharedData>().props;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
-        firstname: auth.user.firstname,
-        lastname: auth.user.lastname,
-        birthday: auth.user.birthday,
-        tel: auth.user.tel,
-        email: auth.user.email,
+    const { data, setData, post, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
+        avatar:     null,
+        firstname:  auth.user.firstname,
+        lastname:   auth.user.lastname,
+        birthday:   auth.user.birthday,
+        tel:        auth.user.tel,
+        email:      auth.user.email,
     });
 
     const [open, setOpen] = useState<boolean>(false);
@@ -45,8 +48,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'), {
+        post(route('profile.update'), {
             preserveScroll: true,
+            forceFormData: true,
         });
     };
 
@@ -58,7 +62,23 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                 <div className="space-y-6">
                     <HeadingSmall title="Informations du profil" description="Mettez à jour vos informations" />
 
-                    <form onSubmit={submit} className="space-y-6">
+                    <form onSubmit={submit} className="space-y-6" encType='multipart/form-data'>
+
+                        <div className="grid gap-2">
+                            <div className="flex items-center gap-2">
+                                <Label>Image de profil</Label>
+                                {auth.user?.avatar && (
+                                    <div title="Une image de profil est enregistré">
+                                        <UserCheck className="w-4 h-4" />
+                                    </div>
+                                )}
+                            </div>
+                            <ImagePicker
+                                onFileSelected={file => setData('avatar', file)}
+                                initialFile={data.avatar}
+                            />
+                        </div>
+
                         <div className="grid gap-2">
                             <Label htmlFor="lastname">Nom</Label>
 

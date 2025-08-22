@@ -32,7 +32,6 @@ class ProfileController extends Controller
     // public function update(ProfileUpdateRequest $request): RedirectResponse
     public function update(Request $request): RedirectResponse
     {
-        dd($request->all());
         $user = $request->user();
         if ($request->file('avatar')) {
             $path = "images";

@@ -9,6 +9,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import { toast } from 'sonner';
+import axios from 'axios';
 
 type LoginForm = {
     email: string;
@@ -36,6 +38,16 @@ export default function Login({ status, canResetPassword, hasUser }: LoginProps)
         });
     };
 
+    const sendEmail = async () => {
+        const response = await axios.post(route('password.email'));
+
+        if (response.status === 200) {
+            toast.success('Email envoyé !');
+        } else {
+            toast.error("Une erreur s'est produite lors de l'envoie du mail");
+        }
+    }
+
     return (
         <AuthLayout title="Connectez-vous à votre compte" description="Entrez votre email et votre mot de passe ci-dessous pour vous connecter">
             <Head title="Log in" />
@@ -61,10 +73,10 @@ export default function Login({ status, canResetPassword, hasUser }: LoginProps)
                     <div className="grid gap-2">
                         <div className="flex items-center">
                             <Label htmlFor="password">Mot de passe</Label>
-                            {canResetPassword && (
-                                <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
+                            {hasUser && (
+                                <Button type='button' onClick={() => sendEmail()} variant="link" className='ml-auto text-sm' tabIndex={5}>
                                     Mot de passe oublié ?
-                                </TextLink>
+                                </Button>
                             )}
                         </div>
                         <Input
@@ -96,15 +108,6 @@ export default function Login({ status, canResetPassword, hasUser }: LoginProps)
                         Connexion
                     </Button>
                 </div>
-
-                { !hasUser && (
-                    <div className="text-center text-sm text-muted-foreground">
-                        Don't have an account?{' '}
-                        <TextLink href={route('register')} tabIndex={5}>
-                            Sign up
-                        </TextLink>
-                    </div>
-                ) }
             </form>
 
             {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
