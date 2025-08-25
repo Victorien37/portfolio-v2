@@ -39,7 +39,7 @@ class FrontController extends Controller
             ->get();
         $skills         = SkillCategory::with('skills')->get();
         $sides          = Project::where('side', true)->get();
-        $studies        = Study::all();
+        $studies        = Study::all()->orderBy('end', "DESC");
         $languages      = Language::all();
         $interests      = Interest::all();
 
