@@ -26,9 +26,9 @@ class ImageService
         try {
             $image = Image::read($file);
         } catch (DecoderException $de) {
-            throw new Error("Le fichier est illisible ou corrompu.");
+            throw new Error("Le fichier est illisible ou corrompu : " . $de->getMessage());
         } catch (Exception $e) {
-            throw new Error("Une erreur s'est produite lors de l'ajout de l'image");
+            throw new Error("Une erreur s'est produite lors de l'ajout de l'image : " . $e->getMessage());
         }
 
         // Resize with aspect ration
