@@ -23,7 +23,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ user, config }) 
                 <div className="lg:col-span-1 text-center lg:text-left">
                     <div className="relative inline-block mb-6">
                     <img 
-                        src={user.avatar} 
+                        src={user?.avatar ?? "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"} 
                         alt="Photo de profil" 
                         className="w-48 h-48 rounded-2xl object-cover shadow-2xl border-4 border-primary/20"
                     />
