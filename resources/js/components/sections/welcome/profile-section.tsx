@@ -23,7 +23,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ user, config }) 
                 <div className="lg:col-span-1 text-center lg:text-left">
                     <div className="relative inline-block mb-6">
                     <img 
-                        src="https://media.licdn.com/dms/image/v2/D4E03AQHBidsKlaLPeA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1684663167119?e=2147483647&v=beta&t=FoxF_8VJDNKPVwzhMHV0pyXuC7lbV2DJfVkk_eOVe2c" 
+                        src={user.avatar} 
                         alt="Photo de profil" 
                         className="w-48 h-48 rounded-2xl object-cover shadow-2xl border-4 border-primary/20"
                     />
