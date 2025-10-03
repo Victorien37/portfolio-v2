@@ -71,20 +71,27 @@ class FrontController extends Controller
 
     public function contact(StoreContactRequest $request) : RedirectResponse
     {
-        $key = 'contact-form:' . $request->ip();
+        // Note: Honeypot validation is handled automatically by StoreContactRequest rules (max:0)
 
-        if (RateLimiter::tooManyAttempts($key, 2)) {
+        $key = 'contact-form:' . $request->ip();
+        $maxAttempts = 1;
+        $decaySeconds = 86400; // 24 hours (1 day)
+
+        // Check rate limit
+        if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
+            $seconds = RateLimiter::availableIn($key);
+            $hours = ceil($seconds / 3600);
+
             return back()->withErrors([
-                'form' => 'Message bloqué, trop de tentatives !'
+                'form' => "Vous avez déjà envoyé un message. Veuillez réessayer dans {$hours} heure(s)."
             ]);
         }
-        RateLimiter::hit($key, 3600);
 
-        if ($request->honeypot !== null) {
-            return back()->withErrors([
-                'form' => 'Les spams sont bloqués par le système',
-            ]);
-        } 
+        // Hit the rate limiter (1 message per day)
+        RateLimiter::hit($key, $decaySeconds);
+
+        // TODO: Send email or save message to database
+        // Example: Mail::to(config('mail.admin'))->send(new ContactMail($request->validated()));
 
         return back()->with('success', 'Message envoyé avec succès !');
     }

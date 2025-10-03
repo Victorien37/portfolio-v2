@@ -4,6 +4,8 @@ import { useTranslation } from "@/hooks/use-translation";
 import { Interest, Language, SkillCategory } from "@/types";
 import { Emoji } from "emoji-picker-react";
 import React from "react";
+import { SectionHeader } from "./common/section-header";
+import { ContentCard } from "./common/content-card";
 
 type SkillSectionProps = {
     skillCategories:    SkillCategory[];
@@ -12,26 +14,24 @@ type SkillSectionProps = {
 }
 
 export const SkillSection: React.FC<SkillSectionProps> = ({ skillCategories, interests, languages }) => {
-
     const { t } = useTranslation();
 
     return (
-        <section className="py-20 bg-background">
-            <div className="container mx-auto px-6 lg:px-12">
-                <div className="grid lg:grid-cols-3 gap-12">
+        <section className="py-20 bg-background overflow-x-hidden">
+            <div className="container mx-auto px-6 lg:px-12 max-w-full">
+                <div className="grid lg:grid-cols-3 gap-12 max-w-full">
                     {/* Compétences technique */}
-                    <div className="lg:col-span-2">
-                        <div className="mb-12">
-                            <h2 className="text-4xl font-bold mb-4">
-                                <span className="text-primary">{t('skills')}</span>
-                            </h2>
-                            <div className="w-24 h-1 bg-primary"></div>
-                        </div>
+                    <div className="lg:col-span-2 max-w-full overflow-hidden">
+                        <SectionHeader
+                            title={<span className="text-primary">{t('skills')}</span>}
+                            centered={false}
+                            className="mb-12"
+                        />
 
                         <div className="space-y-8">
                             { skillCategories.map((category, index) => {
                                 return (
-                                    <div key={index} className="bg-background/50 p-6 rounded-lg border border-secondary/50">
+                                    <ContentCard key={index}>
                                         <div className="flex items-center gap-3 mb-6">
                                             <div className="p-2 bg-primary/20 rounded-lg text-primary">
                                                 <DynamicIcon name={category.svg} />
@@ -52,16 +52,16 @@ export const SkillSection: React.FC<SkillSectionProps> = ({ skillCategories, int
                                                 )
                                             }) }
                                         </div>
-                                    </div>
+                                    </ContentCard>
                                 )
                             }) }
                         </div>
                     </div>
 
                     {/* Sidebar avec infos supplémentaires */}
-                    <div className="space-y-8">
+                    <div className="space-y-8 max-w-full overflow-hidden">
                         {/* Langues */}
-                        <div className="bg-background/50 p-6 rounded-lg border border-secondary/50">
+                        <ContentCard>
                             <h3 className="text-lg font-bold mb-6 text-primary">{t('languages')}</h3>
                             <div className="space-y-3">
                                 { languages.map((lang, index) => {
@@ -78,10 +78,10 @@ export const SkillSection: React.FC<SkillSectionProps> = ({ skillCategories, int
                                     )
                                 }) }
                             </div>
-                        </div>
+                        </ContentCard>
 
                         {/* Centres d'intérêts */}
-                        <div className="bg-background/50 p-6 rounded-lg border border-secondary/50">
+                        <ContentCard>
                             <h3 className="text-lg font-bold mb-6 text-primary">{t('interests')}</h3>
                             <div className="space-y-3">
                                 { interests.map((interest, index) => {
@@ -93,7 +93,7 @@ export const SkillSection: React.FC<SkillSectionProps> = ({ skillCategories, int
                                     )
                                 }) }
                             </div>
-                        </div>
+                        </ContentCard>
                     </div>
                 </div>
             </div>

@@ -4,6 +4,10 @@ import { Experience } from "@/types";
 import { router } from "@inertiajs/react";
 import { ArrowRight, Calendar, Plus } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
+import { SectionHeader } from "./common/section-header";
+import { ContentCard } from "./common/content-card";
+import { TimelineDot, TimelineLine } from "./common/timeline-dot";
+import { getEndDate } from "@/lib/date-utils";
 
 type ExperienceSectionProps = {
     experiences: Experience[];
@@ -38,33 +42,14 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
         }
     }, [showAll]);
 
-    const getEndDate = (experience: Experience) => {
-        if (experience?.end) {
-            let start   = new Date(experience.start);
-            let end     = new Date(experience.end);
-            
-            if (end.getFullYear() !== start.getFullYear()) {
-                return ` - ${end.getFullYear()}`;
-            }
-        }
-        
-        return '';
-    }
-
     return (
-        <section className="py-20 bg-background">
-            <div className="container mx-auto px-6 lg:px-12">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold mb-4">
-                        {t('expro')} <span className="text-primary"></span>
-                    </h2>
-                    <div className="w-24 h-1 bg-primary mx-auto"></div>
-                </div>
+        <section className="py-20 bg-background overflow-x-hidden">
+            <div className="container mx-auto px-6 lg:px-12 max-w-full">
+                <SectionHeader title={t('expro')} />
 
                 <div className="max-w-4xl mx-auto">
                     <div className="relative">
-                        {/* Timeline line */}
-                        <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary to-primary-dark"></div>
+                        <TimelineLine />
                         
                         { experiences.slice(0, showAll ? experiences.length : 3).map((experience, index) => {
                             return (
@@ -75,21 +60,18 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
                                     className={`relative pl-12 pb-12 last:pb-0 transition-all duration-700 ${visibleItems.includes(index) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                                     style={{ transitionDelay: `${index * 200}ms` }}
                                 >
-                                    {/* Timeline dot */}
-                                    <div className={`absolute left-2 w-4 h-4 bg-primary rounded-full border-4 border-background shadow-lg transition-all duration-500 ${visibleItems.includes(index) ? 'scale-100' : 'scale-0'}`}></div>
+                                    <TimelineDot animated visible={visibleItems.includes(index)} />
 
-                                    <div 
-                                        className="bg-background/50 p-6 rounded-lg border border-secondary/30 hover:border-primary/50 hover:bg-background/70 transition-all duration-300 cursor-pointer group"
-                                        // onClick={() => route('experience.show', {'companyName': experience.company.name, 'start': experience.start})}
+                                    <ContentCard
+                                        className="hover:bg-background/70 group"
                                         onClick={() => router.visit(
                                             route('experience.show', { companyName: experience.company.name, start: experience.start })
                                         )}
-                                        // onClick={() => console.log('click')}
                                     >
                                         <div className="flex flex-wrap items-center gap-2 mb-4">
                                             <Calendar className="w-4 h-4" />
                                             <span className="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                                                {new Date(experience.start).getFullYear()}{getEndDate(experience)}
+                                                {new Date(experience.start).getFullYear()}{getEndDate(experience.start, experience.end)}
                                             </span>
                                         </div>
 
@@ -111,7 +93,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
                                             </div>
                                             <ArrowRight className="w-5 h-5 text-primary opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
                                         </div>
-                                    </div>
+                                    </ContentCard>
                                 </div>
                             )
                         }) }

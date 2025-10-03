@@ -33,15 +33,18 @@ class StudyController extends Controller
 
     public function store(Request $request) : RedirectResponse
     {
-        Study::create([
+        $study = Study::create([
             'start'     => Carbon::parse($request->start),
             'end'       => $request?->end ? Carbon::parse($request->end) : null,
-            'name'      => $this->translator->translate($request->name),
-            'full_name' => $this->translator->translate($request->full_name),
-            'school'    => $this->translator->translate($request->school),
+            'name'      => $this->translator->translateDeferred($request->name),
+            'full_name' => $this->translator->translateDeferred($request->full_name),
+            'school'    => $this->translator->translateDeferred($request->school),
             'obtained'  => $request->obtained,
             'mention'   => $request->mention,
         ]);
+
+        // Queue translation job for async processing
+        \App\Jobs\TranslateModelFieldsJob::dispatch($study, ['name', 'full_name', 'school']);
 
         return redirect()->route('study.index');
     }

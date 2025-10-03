@@ -2,9 +2,11 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslation } from "@/hooks/use-translation";
 import { User } from "@/types";
 import { useForm } from "@inertiajs/react";
-import { Github, Linkedin, Mail, MapPin, Phone, Send } from "lucide-react";
+import { Mail, MapPin, Phone, Send } from "lucide-react";
 import React, { FormEvent } from "react";
 import { toast } from "sonner";
+import { SectionHeader } from "./common/section-header";
+import { ContentCard } from "./common/content-card";
 
 type ContactSectionProps = {
     user: User;
@@ -51,71 +53,56 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ user }) => {
     }
 
     return (
-        <section className="py-20 bg-background">
-            <div className="container mx-auto px-6 lg:px-12">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold mb-4">
-                        {t('contact.stay')} {t('contact.in')} <span className="text-primary">{t('contact.contact')}</span>
-                    </h2>
-                    <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
-                    <p className="text-xl text-secondary max-w-2xl mx-auto">{t('contact.subtitle')}</p>
-                </div>
+        <section className="py-20 bg-background overflow-x-hidden">
+            <div className="container mx-auto px-6 lg:px-12 max-w-full">
+                <SectionHeader
+                    title={<>{t('contact.stay')} {t('contact.in')} <span className="text-primary">{t('contact.contact')}</span></>}
+                    subtitle={t('contact.subtitle')}
+                />
 
-                <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto w-full">
                 {/* Informations de contact */}
-                <div className="space-y-8">
-                    <div className="bg-background/50 p-8 rounded-lg border border-secondary/50">
+                <div className="space-y-8 max-w-full overflow-hidden">
+                    <ContentCard className="p-8">
                         <h3 className="text-2xl font-bold mb-6 text-primary">{t('contact.infos.title')}</h3>
                         
                         <div className="space-y-6">
                             <div className="flex items-center gap-4">
-                                <div className="p-3 bg-primary/20 rounded-lg">
+                                <div className="p-3 bg-primary/20 rounded-lg flex-shrink-0">
                                     <Phone className="w-5 h-5 text-primary" />
                                 </div>
-                                <div>
+                                <div className="min-w-0 flex-1">
                                     <p className="text-secondary text-sm">{t('contact.infos.tel')}</p>
-                                    <p className="text-secondary font-medium">{ language === 'fr' ? user.tel : `+33${user.tel.slice(1)}` }</p>
+                                    <p className="text-secondary font-medium break-words">{ language === 'fr' ? user.tel : `+33${user.tel.slice(1)}` }</p>
                                 </div>
                                 </div>
 
                                 <div className="flex items-center gap-4">
-                                <div className="p-3 bg-primary/20 rounded-lg">
+                                <div className="p-3 bg-primary/20 rounded-lg flex-shrink-0">
                                     <Mail className="w-5 h-5 text-primary" />
                                 </div>
-                                <div>
+                                <div className="min-w-0 flex-1">
                                     <p className="text-secondary text-sm">{t('contact.infos.email')}</p>
-                                    <p className="text-secondary font-medium">{ user.email }</p>
+                                    <p className="text-secondary font-medium break-all">{ user.email }</p>
                                 </div>
                                 </div>
 
                                 <div className="flex items-center gap-4">
-                                <div className="p-3 bg-primary/20 rounded-lg">
+                                <div className="p-3 bg-primary/20 rounded-lg flex-shrink-0">
                                     <MapPin className="w-5 h-5 text-primary" />
                                 </div>
-                                <div>
+                                <div className="min-w-0 flex-1">
                                     <p className="text-secondary text-sm">{t('contact.infos.location')}</p>
-                                    <p className="text-secondary font-medium">Tours, France</p>
+                                    <p className="text-secondary font-medium break-words">Tours, France</p>
                                 </div>
                             </div>
                         </div>
 
-                        {/* <div className="mt-8 pt-6 border-t border-gray-700">
-                            <p className="text-gray-400 mb-4">Suivez-moi sur :</p>
-                            <div className="flex gap-4">
-                            <a href="#" className="p-3 bg-yellow-400/10 border border-yellow-400/20 rounded-lg hover:bg-yellow-400/20 transition-colors group">
-                                <Github className="w-5 h-5 text-yellow-400 group-hover:scale-110 transition-transform" />
-                            </a>
-                            <a href="#" className="p-3 bg-yellow-400/10 border border-yellow-400/20 rounded-lg hover:bg-yellow-400/20 transition-colors group">
-                                <Linkedin className="w-5 h-5 text-yellow-400 group-hover:scale-110 transition-transform" />
-                            </a>
-                            </div>
-                        </div> */}
-                    </div>
-
+                    </ContentCard>
                 </div>
 
                 {/* Formulaire de contact */}
-                <div className="bg-background/50 p-8 rounded-lg border border-secondary/50">
+                <ContentCard className="p-8">
                     <h3 className="text-2xl font-bold mb-6 text-primary">{t('contact.form.title')}</h3>
                     
                     <form className="space-y-6" onSubmit={handleSubmit}>
@@ -150,7 +137,19 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ user }) => {
                                     onChange={e => setData('email', e.target.value)}
                                 />
 
-                                <input type="text" className="invisible" name="honeypot" id="honeypot" onChange={e => setData('honeypot', e.target.value)} />
+                                {/* Honeypot field - hidden from users but not from bots */}
+                                <div style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden' }} aria-hidden="true">
+                                    <label htmlFor="honeypot">Leave this field empty</label>
+                                    <input
+                                        type="text"
+                                        name="honeypot"
+                                        id="honeypot"
+                                        value={data.honeypot}
+                                        onChange={e => setData('honeypot', e.target.value)}
+                                        tabIndex={-1}
+                                        autoComplete="off"
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -184,7 +183,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ user }) => {
                             {t('contact.form.labels.send')}
                         </button>
                     </form>
-                </div>
+                </ContentCard>
                 </div>
 
                 {/* Footer */}

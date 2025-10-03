@@ -21,15 +21,18 @@ class ProjectController extends Controller
 
     public function store(Request $request) : RedirectResponse
     {
-        Project::create([
-            'title'             => $this->translator->translate($request->title),
-            'description_short' => $this->translator->translate($request->description_short),
-            'description_long'  => $this->translator->translate($request->description_long),
+        $project = Project::create([
+            'title'             => $this->translator->translateDeferred($request->title),
+            'description_short' => $this->translator->translateDeferred($request->description_short),
+            'description_long'  => $this->translator->translateDeferred($request->description_long),
             'experience_id'     => $request?->experience_id ?? null,
             'url'               => $request->url,
             'side'              => $request->side,
             'in_progress'       => $request->in_progress,
         ]);
+
+        // Queue translation job for async processing
+        \App\Jobs\TranslateModelFieldsJob::dispatch($project, ['title', 'description_short', 'description_long']);
 
         return redirect()->route('experience.index');
     }

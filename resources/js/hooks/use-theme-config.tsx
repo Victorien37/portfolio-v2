@@ -13,14 +13,25 @@ type ThemeColors = {
     secondary:  string;
 }
 
+const FRONT_THEME_KEY = "front-theme";
+
+const getStoredTheme = (): ThemeMode => {
+    const stored = localStorage.getItem(FRONT_THEME_KEY);
+    return (stored === "light" || stored === "dark") ? stored : "dark";
+};
+
 export const useThemeConfig = (config?: RawThemeConfig) => {
     const [theme, setTheme] = useState<ThemeMode>(() => {
-        return (localStorage.getItem("theme") as ThemeMode) || "dark";
+        return getStoredTheme();
     });
 
     const toggleTheme = () => {
         setTheme(theme === "light" ? "dark" : "light");
     };
+
+    useEffect(() => {
+        localStorage.setItem(FRONT_THEME_KEY, theme);
+    }, [theme]);
 
     const colors: ThemeColors | null = useMemo(() => {
         if (!config) return null;

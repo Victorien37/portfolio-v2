@@ -49,7 +49,7 @@ export const CreateExperienceModal: React.FC<CreateExperienceModalProps> = ({ co
     const [step, setStep] = useState<0 | 1>(0);
     const [hasCompany, setHasCompany] = useState<boolean>(false);
 
-    const { data, setData, post, errors, reset } = useForm<{
+    const { data, setData, post, errors, reset, processing } = useForm<{
         company: {
             id:         number | null;
             name:       string;
@@ -258,11 +258,13 @@ export const CreateExperienceModal: React.FC<CreateExperienceModalProps> = ({ co
 
 
                     <DialogFooter>
-                        {step > 0 && <Button type="button" onClick={prevStep}>Précédent</Button>}
+                        {step > 0 && <Button type="button" onClick={prevStep} disabled={processing}>Précédent</Button>}
                         {step < 1 ? (
-                            <Button type="button" onClick={nextStep} disabled={nextStepDisabled()}>Suivant</Button>
+                            <Button type="button" onClick={nextStep} disabled={nextStepDisabled() || processing}>Suivant</Button>
                         ) : (
-                            <Button type="submit" disabled={nextStepDisabled()}>Créer</Button>
+                            <Button type="submit" disabled={nextStepDisabled() || processing}>
+                                {processing ? "Création..." : "Créer"}
+                            </Button>
                         )}
                     </DialogFooter>
                 </form>

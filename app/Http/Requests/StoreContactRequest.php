@@ -22,12 +22,12 @@ class StoreContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname' => ['required', 'string'],
-            'lastname'  => ['required', 'string'],
-            'email'     => ['required', 'string'],
-            'honeypot'  => ['nullable', 'string'],
-            'subject'   => ['required', 'string'],
-            'message'   => ['required', 'string'],
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname'  => ['required', 'string', 'max:255'],
+            'email'     => ['required', 'email', 'max:255'],
+            'honeypot'  => ['nullable', 'string', 'max:0'], // Must be empty (bot trap)
+            'subject'   => ['required', 'string', 'max:255'],
+            'message'   => ['required', 'string', 'max:5000'],
         ];
     }
 

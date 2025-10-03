@@ -56,14 +56,17 @@ class ExperienceController extends Controller
             ]);
         }
 
-        Experience::create([
+        $experience = Experience::create([
             'start'         => Carbon::parse($request->experience['start']),
             'end'           => $request->experience['end'] ? Carbon::parse($request->experience['end']) : null,
             'company_id'    => $company->id,
-            'job'           => $this->translator->translate($request->experience['job']),
-            'description'   => $this->translator->translate($request->experience['description']),
+            'job'           => $this->translator->translateDeferred($request->experience['job']),
+            'description'   => $this->translator->translateDeferred($request->experience['description']),
             'contract'      => $request->experience['contract'],
         ]);
+
+        // Queue translation job for async processing
+        \App\Jobs\TranslateModelFieldsJob::dispatch($experience, ['job', 'description']);
 
         return redirect()->route('experience.index');
     }

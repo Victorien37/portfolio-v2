@@ -16,9 +16,9 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ user, config }) 
     const { t }             = useTranslation();
 
     return (
-        <section className="relative bg-background min-h-screen flex items-center">
-            <div className="container mx-auto px-6 lg:px-12">
-                <div className="grid lg:grid-cols-3 gap-12 items-center">
+        <section className="relative bg-background min-h-screen flex items-center overflow-x-hidden">
+            <div className="container mx-auto px-6 lg:px-12 max-w-full">
+                <div className="grid lg:grid-cols-3 gap-12 items-center max-w-full">
                 {/* Photo et info de base */}
                 <div className="lg:col-span-1 text-center lg:text-left">
                     <div className="relative inline-block mb-6">
@@ -79,11 +79,11 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ user, config }) 
                 </div>
 
                 {/* Titre principal */}
-                <div className="lg:col-span-2">
+                <div className="lg:col-span-2 max-w-full overflow-hidden">
                     <div className="relative">
-                        <h2 className="text-4xl lg:text-6xl font-bold text-secondary mb-4">{ t(config.job) }</h2>
+                        <h2 className="text-4xl lg:text-6xl font-bold text-secondary mb-4 break-words overflow-wrap-anywhere">{ t(config.job) }</h2>
                         <div className="w-100 h-1 bg-gradient-to-r from-primary to-primary-dark mb-6"></div>
-                            <p className="text-xl lg:text-2xl text-secondary mb-8 leading-relaxed">{ t(config.description) }</p>
+                            <p className="text-xl lg:text-2xl text-secondary mb-8 leading-relaxed break-words overflow-wrap-anywhere">{ t(config.description) }</p>
                         </div>
                     </div>
                 </div>
